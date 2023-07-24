@@ -2,14 +2,14 @@ from config import ConfigurationManager
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig, TrainingArguments, Trainer
 import torch
 import time
-import evaluate
+import evaluator
 import pandas as pd
 import numpy as np
 
 config = ConfigurationManager.get_instance()
 
 
-def finetune(model, tokenized_data):
+def finetune(model_dict, tokenized_data):
 
     training_args = TrainingArguments(
         output_dir=config.ft_output_dir,
@@ -21,7 +21,7 @@ def finetune(model, tokenized_data):
     )
 
     trainer = Trainer(
-        model=model,
+        model=model_dict['model'],
         args=training_args,
         train_dataset=tokenized_data['train'],
         eval_dataset=tokenized_data['validation']
